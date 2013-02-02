@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
-public class LotteryMachinesActivity extends FragmentActivity
+public class LotteriesActivity extends FragmentActivity
 {
 
 	@Override
@@ -16,7 +16,7 @@ public class LotteryMachinesActivity extends FragmentActivity
 		if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null)
 		{
 			getSupportFragmentManager().beginTransaction()
-					.add(android.R.id.content, new LotteryMachinesFragment())
+					.add(android.R.id.content, new LotteriesFragment())
 					.commit();
 		}
 	}

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-public class LotteryMachinesFragment extends ListFragment
+public class LotteriesFragment extends ListFragment
 {
 	private DatabaseHelper db;
 
@@ -23,7 +23,7 @@ public class LotteryMachinesFragment extends ListFragment
 		setRetainInstance(true);
 
 		db = new DatabaseHelper(getActivity().getApplicationContext());
-		new LoadMachinesCursorTask().execute();
+		new LoadLotteriesCursorTask().execute();
 	}
 
 	@Override
@@ -35,22 +35,22 @@ public class LotteryMachinesFragment extends ListFragment
 		db.close();
 	}
 
-	private Cursor selectMachinesQuery()
+	private Cursor selectLotteriesQuery()
 	{
 		String sql = "SELECT _id, title, description"
-				+ " FROM machines ORDER BY title";
+				+ " FROM lotteries ORDER BY title";
 		return db.getReadableDatabase().rawQuery(sql, null);
 	}
 
-	private class LoadMachinesCursorTask extends AsyncTask<Void, Void, Void>
+	private class LoadLotteriesCursorTask extends AsyncTask<Void, Void, Void>
 	{
-		private Cursor machinesCursor;
+		private Cursor lotteriesCursor;
 
 		@Override
 		protected Void doInBackground(Void... params)
 		{
-			machinesCursor = selectMachinesQuery();
-			machinesCursor.getCount();
+			lotteriesCursor = selectLotteriesQuery();
+			lotteriesCursor.getCount();
 
 			return null;
 		}
@@ -58,40 +58,40 @@ public class LotteryMachinesFragment extends ListFragment
 		@Override
 		protected void onPostExecute(Void result)
 		{
-			MachinesListAdapter adapter;
+			LotteryListAdapter adapter;
 
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			{
-				adapter = new MachinesListAdapter(machinesCursor);
+				adapter = new LotteryListAdapter(lotteriesCursor);
 			}
 			else
 			{
-				adapter = new MachinesListAdapter(machinesCursor, 0);
+				adapter = new LotteryListAdapter(lotteriesCursor, 0);
 			}
 
 			setListAdapter(adapter);
 		}
 	}
 
-	private class MachinesListAdapter extends SimpleCursorAdapter
+	private class LotteryListAdapter extends SimpleCursorAdapter
 	{
 		@SuppressWarnings("deprecation")
-		MachinesListAdapter(Cursor cursor)
+		LotteryListAdapter(Cursor cursor)
 		{
-			super(LotteryMachinesFragment.this.getActivity(),
-					R.layout.machines_list_row, cursor, new String[] {
-							DatabaseHelper.MACHINES_TITLE,
-							DatabaseHelper.MACHINES_DESCRIPTION }, new int[] {
+			super(LotteriesFragment.this.getActivity(),
+					R.layout.lottery_list_row, cursor, new String[] {
+							DatabaseHelper.LOTTERIES_TITLE,
+							DatabaseHelper.LOTTERIES_DESCRIPTION }, new int[] {
 							R.id.lottery_title, R.id.lottery_description });
 
 		}
 
-		MachinesListAdapter(Cursor cursor, int flags)
+		LotteryListAdapter(Cursor cursor, int flags)
 		{
-			super(LotteryMachinesFragment.this.getActivity(),
-					R.layout.machines_list_row, cursor, new String[] {
-							DatabaseHelper.MACHINES_TITLE,
-							DatabaseHelper.MACHINES_DESCRIPTION }, new int[] {
+			super(LotteriesFragment.this.getActivity(),
+					R.layout.lottery_list_row, cursor, new String[] {
+							DatabaseHelper.LOTTERIES_TITLE,
+							DatabaseHelper.LOTTERIES_DESCRIPTION }, new int[] {
 							R.id.lottery_title, R.id.lottery_description },
 					flags);
 
