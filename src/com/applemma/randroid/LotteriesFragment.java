@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,9 +23,18 @@ public class LotteriesFragment extends ListFragment
 		super.onActivityCreated(savedInstanceState);
 
 		setRetainInstance(true);
-				
+
 		db = new DatabaseHelper(getActivity().getApplicationContext());
 		new LoadLotteriesCursorTask().execute();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState)
+	{
+		View layout = inflater.inflate(R.layout.lotteries_fragment, container,
+				false);
+		return layout;
 	}
 
 	@Override
