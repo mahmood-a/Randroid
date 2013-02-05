@@ -1,24 +1,19 @@
 package com.applemma.randroid;
 
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 
-public class LotteriesActivity extends FragmentActivity
+import com.applemma.util.support.DynamicFragmentActivity;
+
+public class LotteriesActivity extends DynamicFragmentActivity
 {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null)
-		{
-			getSupportFragmentManager().beginTransaction()
-					.add(android.R.id.content, new LotteriesFragment())
-					.commit();
-		}
+		
+		executeDynamicFragment(new LotteriesFragment());
 	}
 
 	@Override
