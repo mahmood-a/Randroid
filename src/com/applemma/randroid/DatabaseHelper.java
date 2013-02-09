@@ -11,6 +11,8 @@ import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {
+
+	// Database schema
 	private static final String DATABASE_NAME = "randroid.db";
 	private static final int SCHEMA = 1;
 
@@ -30,10 +32,26 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	static final String DRAWS_TIMESTAMP = "timestamp";
 	static final String DRAWS_RESULT = "result";
 	static final String DRAWS_MACHINE_ID = "machine_id";
+	
+	// Singleton members
+	
+	private static DatabaseHelper singleton = null;
+	private Context ctxt = null;
 
-	public DatabaseHelper(Context context)
+	public synchronized static  DatabaseHelper getInstance(Context ctxt)
 	{
-		super(context, DATABASE_NAME, null, SCHEMA);
+		if (singleton == null)
+		{
+			singleton = new DatabaseHelper(ctxt.getApplicationContext());
+		}
+
+		return singleton;
+	}
+
+	private DatabaseHelper(Context ctxt)
+	{
+		super(ctxt, DATABASE_NAME, null, SCHEMA);
+		this.ctxt = ctxt;
 	}
 
 	@Override

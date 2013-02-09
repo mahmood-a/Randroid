@@ -1,5 +1,6 @@
 package com.applemma.randroid;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -10,10 +11,9 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 
-public class LotteriesFragment extends ListFragment
+public class LotteriesFragment extends ListFragment implements
+		View.OnClickListener
 {
 	private DatabaseHelper db;
 
@@ -24,7 +24,7 @@ public class LotteriesFragment extends ListFragment
 
 		setRetainInstance(true);
 
-		db = new DatabaseHelper(getActivity().getApplicationContext());
+		db = DatabaseHelper.getInstance(getActivity());
 		new LoadLotteriesCursorTask().execute();
 	}
 
@@ -34,7 +34,21 @@ public class LotteriesFragment extends ListFragment
 	{
 		View layout = inflater.inflate(R.layout.lotteries_fragment, container,
 				false);
+
+		layout.findViewById(R.id.add_lottery_btn).setOnClickListener(this);
+
 		return layout;
+	}
+
+	@Override
+	public void onClick(View v)
+	{
+		Intent i = new Intent(getActivity(), AddEditLotteryActivity.class);
+		
+		// extras could be put here, later
+		
+		startActivity(i);
+
 	}
 
 	@Override

@@ -1,8 +1,16 @@
 package com.applemma.randroid;
 
-import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 
-public class AddEditLotteryActivity extends FragmentActivity
+import com.applemma.util.support.DynamicFragmentActivity;
+
+public class AddEditLotteryActivity extends DynamicFragmentActivity
 {
-	// TODO
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+		executeDynamicFragment(new AddEditLotteryFragment());
+	}
 }
