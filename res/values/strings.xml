@@ -11,5 +11,7 @@
     <string name="lottery_desc_hint">Lottery Description</string>
     <string name="lottery_tickets">Add/Remove Tickets to the Lottery:</string>
     <string name="add_ticket">Add Ticket</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

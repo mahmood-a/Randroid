@@ -26,6 +26,7 @@ public class AddEditLotteryFragment extends Fragment
 	{
 		View layout = inflater.inflate(R.layout.add_edit_lottery, container,
 				false);
+
 		return layout;
 	}
 
