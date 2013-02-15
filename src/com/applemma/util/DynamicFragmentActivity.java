@@ -6,8 +6,8 @@ import android.app.Fragment;
 import android.os.Build;
 
 /**
- * A fragment that is executed dynamically from the activity, typically in
- * "OnCreate" callback of an activity
+ * An Activity that loads fragments dynamically, typically in
+ * the on "OnCreate" callback
  * 
  * @author Mahmood
  * 
@@ -15,7 +15,7 @@ import android.os.Build;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DynamicFragmentActivity extends Activity
 {
-	protected void executeDynamicFragment(Fragment f)
+	protected void loadDynamicFragment(Fragment f)
 	{
 		if (getFragmentManager().findFragmentById(android.R.id.content) == null)
 		{

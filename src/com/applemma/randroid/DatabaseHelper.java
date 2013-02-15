@@ -16,7 +16,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final int SCHEMA = 1;
 
 	// Database tables and their columns
-
 	static final String TABLE_LOTTERIES = "lotteries";
 	static final String LOTTERIES_TITLE = "title";
 	static final String LOTTERIES_DESCRIPTION = "description";
@@ -33,7 +32,6 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	static final String DRAWS_MACHINE_ID = "machine_id";
 	
 	// Singleton members
-	
 	private static DatabaseHelper singleton = null;
 	private Context ctxt = null;
 

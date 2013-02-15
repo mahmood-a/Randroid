@@ -11,6 +11,6 @@ public class AddEditLotteryActivity extends DynamicFragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		executeDynamicFragment(new AddEditLotteryFragment());
+		loadDynamicFragment(new AddEditLotteryFragment());
 	}
 }

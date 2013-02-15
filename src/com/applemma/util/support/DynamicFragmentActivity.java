@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 /**
- * A fragment that is executed dynamically from the activity, typically in
- * "OnCreate" callback of an activity. This class is used with support versions
+ * An Activity that is loads fragments dynamically, typically in
+ * the "OnCreate" callback. This class is used with support versions
  * of FragmentActivity and Fragment
  * 
  * @author Mahmood
@@ -14,7 +14,7 @@ import android.support.v4.app.FragmentActivity;
 
 public class DynamicFragmentActivity extends FragmentActivity
 {
-	protected void executeDynamicFragment(Fragment f)
+	protected void loadDynamicFragment(Fragment f)
 	{
 		if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null)
 		{

@@ -13,13 +13,12 @@ public class LotteriesActivity extends DynamicFragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		
-		executeDynamicFragment(new LotteriesFragment());
+		loadDynamicFragment(new LotteriesFragment());
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_lottery_machines, menu);
 		return true;
 	}

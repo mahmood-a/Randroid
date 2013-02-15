@@ -44,9 +44,9 @@ public class LotteriesFragment extends ListFragment implements
 	public void onClick(View v)
 	{
 		Intent i = new Intent(getActivity(), AddEditLotteryActivity.class);
-		
+
 		// extras could be put here, later
-		
+
 		startActivity(i);
 
 	}
