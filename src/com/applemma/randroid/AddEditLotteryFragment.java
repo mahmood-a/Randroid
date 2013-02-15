@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -19,11 +20,13 @@ public class AddEditLotteryFragment extends Fragment implements
 		View.OnClickListener
 {
 	DatabaseHelper db;
-	
+
 	private EditText titleEdit;
 	private EditText descriptionEdit;
 	private Button okBtn;
-	
+	private Button addTicketBtn;
+	private ListView ticketsList;
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -40,30 +43,40 @@ public class AddEditLotteryFragment extends Fragment implements
 	{
 		View layout = inflater.inflate(R.layout.add_edit_lottery, container,
 				false);
-		
-		titleEdit = (EditText)layout.findViewById(R.id.edit_title);
-		descriptionEdit = (EditText)layout.findViewById(R.id.edit_description);
-		
+
+		titleEdit = (EditText) layout.findViewById(R.id.edit_title);
+		descriptionEdit = (EditText) layout.findViewById(R.id.edit_description);
+
 		okBtn = (Button) layout.findViewById(R.id.lottery_ok_btn);
 		okBtn.setOnClickListener(this);
+		
+		ticketsList = (ListView)layout.findViewById(R.id.tickets_list);
+
+		addTicketBtn = (Button) layout.findViewById(R.id.add_ticket_btn);
+		addTicketBtn.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+			}
+		});
 
 		return layout;
 	}
-	
+
 	@Override
 	public void onClick(View v)
 	{
 		ContentValues cv = new ContentValues();
-		
+
 		String title = titleEdit.getText().toString();
 		cv.put(DatabaseHelper.LOTTERIES_TITLE, title);
-		
+
 		String desciption = descriptionEdit.getText().toString();
 		cv.put(DatabaseHelper.LOTTERIES_DESCRIPTION, desciption);
-		
+
 		String timeStamp = new Date().toString();
 		cv.put(DatabaseHelper.LOTTERIES_CREATION_TIME, timeStamp);
-		
+
 		new InsertLotteryTask().execute(cv);
 	}
 
@@ -89,7 +102,7 @@ public class AddEditLotteryFragment extends Fragment implements
 			{
 				Log.e("Row not added",
 						"InsertLotteryTask in AddEditLotteryFragment "
-					  + "could not add a new lottery to the database.");
+								+ "could not add a new lottery to the database.");
 			}
 			else
 			{
