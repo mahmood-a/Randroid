@@ -44,7 +44,7 @@ public class TicketDialogFragment extends DialogFragment implements
 	@Override
 	public void onClick(DialogInterface dialog, int which)
 	{
-
+		// TODO
 	}
 
 }
