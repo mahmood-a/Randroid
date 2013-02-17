@@ -10,7 +10,7 @@
         android:text="@string/ticket_name" />
 
     <EditText
-        android:id="@+id/ticket_title"
+        android:id="@+id/ticket_title_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text" />
