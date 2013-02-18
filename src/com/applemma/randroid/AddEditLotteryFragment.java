@@ -9,11 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AddEditLotteryFragment extends Fragment implements
@@ -25,7 +27,14 @@ public class AddEditLotteryFragment extends Fragment implements
 	private EditText descriptionEdit;
 	private Button okBtn;
 	private Button addTicketBtn;
-	private ListView ticketsList;
+	private ArrayList<String> mTicketsList;
+	private ListView mTicketsListView;
+	private ArrayAdapter<String> mListAdapter;
+
+	public interface IDialogShower
+	{
+		void showDialog();
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
@@ -46,17 +55,23 @@ public class AddEditLotteryFragment extends Fragment implements
 
 		titleEdit = (EditText) layout.findViewById(R.id.edit_title);
 		descriptionEdit = (EditText) layout.findViewById(R.id.edit_description);
+		
+		mTicketsList = new ArrayList<String>();
+		mTicketsListView = (ListView) layout.findViewById(R.id.tickets_list);
+		mListAdapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_list_item_1, mTicketsList);
+		mTicketsListView.setAdapter(mListAdapter);
 
 		okBtn = (Button) layout.findViewById(R.id.lottery_ok_btn);
 		okBtn.setOnClickListener(this);
-		
-		ticketsList = (ListView)layout.findViewById(R.id.tickets_list);
 
 		addTicketBtn = (Button) layout.findViewById(R.id.add_ticket_btn);
 		addTicketBtn.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
+				IDialogShower activity = (IDialogShower) getActivity();
+				activity.showDialog();
 			}
 		});
 
@@ -78,6 +93,12 @@ public class AddEditLotteryFragment extends Fragment implements
 		cv.put(DatabaseHelper.LOTTERIES_CREATION_TIME, timeStamp);
 
 		new InsertLotteryTask().execute(cv);
+	}
+
+	public void addTicketToList(String ticket)
+	{
+		mTicketsList.add(ticket);
+		mListAdapter.notifyDataSetChanged();
 	}
 
 	@Override
