@@ -7,7 +7,7 @@ import com.applemma.util.support.DynamicFragmentActivity;
 
 public class AddEditLotteryActivity extends DynamicFragmentActivity implements
 		TicketDialogFragment.EditTicketDialogListener,
-		AddEditLotteryFragment.IDialogShower
+		IDialogShower
 {
 	private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
 

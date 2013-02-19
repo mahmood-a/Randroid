@@ -2,6 +2,7 @@ package com.applemma.randroid;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.DatabaseUtils.InsertHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,11 +32,6 @@ public class AddEditLotteryFragment extends Fragment implements
 	private ListView mTicketsListView;
 	private ArrayAdapter<String> mListAdapter;
 
-	public interface IDialogShower
-	{
-		void showDialog();
-	}
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -55,7 +51,7 @@ public class AddEditLotteryFragment extends Fragment implements
 
 		titleEdit = (EditText) layout.findViewById(R.id.edit_title);
 		descriptionEdit = (EditText) layout.findViewById(R.id.edit_description);
-		
+
 		mTicketsList = new ArrayList<String>();
 		mTicketsListView = (ListView) layout.findViewById(R.id.tickets_list);
 		mListAdapter = new ArrayAdapter<String>(getActivity(),
@@ -110,7 +106,7 @@ public class AddEditLotteryFragment extends Fragment implements
 	private class InsertLotteryTask extends
 			AsyncTask<ContentValues, Void, Void>
 	{
-		Boolean rowAdded = false;
+		Boolean lotteryAdded = false;
 
 		@Override
 		protected Void doInBackground(ContentValues... cv)
@@ -127,7 +123,7 @@ public class AddEditLotteryFragment extends Fragment implements
 			}
 			else
 			{
-				rowAdded = true;
+				lotteryAdded = true;
 			}
 
 			return null;
@@ -139,11 +135,16 @@ public class AddEditLotteryFragment extends Fragment implements
 			Intent i = new Intent(getActivity(), LotteriesActivity.class);
 			startActivity(i);
 
-			if (rowAdded)
+			if (lotteryAdded)
 			{
 				Toast.makeText(getActivity(), R.string.lottery_added_toast,
 						Toast.LENGTH_SHORT).show();
 			}
+		}
+
+		private void insertLotteryTicekts()
+		{
+			// TODO
 		}
 	}
 
