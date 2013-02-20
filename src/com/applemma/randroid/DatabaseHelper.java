@@ -2,9 +2,11 @@ package com.applemma.randroid;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,18 +26,18 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	static final String TABLE_TICKETS = "tickets";
 	static final String TICKETS_TITLE = "title";
 	static final String TICKETS_CREATION_TIME = "creation_time";
-	static final String TICKETS_MACHINE_ID = "machine_id";
+	static final String TICKETS_LOTTERY_ID = "lottery_id";
 
 	static final String TABLE_DRAWS = "draw";
 	static final String DRAWS_TIMESTAMP = "timestamp";
 	static final String DRAWS_RESULT = "result";
-	static final String DRAWS_MACHINE_ID = "machine_id";
-	
+	static final String DRAWS_LOTTERY_ID = "lottery_id";
+
 	// Singleton members
 	private static DatabaseHelper singleton = null;
 	private Context ctxt = null;
 
-	public synchronized static  DatabaseHelper getInstance(Context ctxt)
+	public synchronized static DatabaseHelper getInstance(Context ctxt)
 	{
 		if (singleton == null)
 		{
@@ -68,9 +70,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			// Create tickets table
 			String createTicketsTableSql = "CREATE TABLE " + TABLE_TICKETS
 					+ " (" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ TICKETS_MACHINE_ID + " INTEGER, " + TICKETS_TITLE
+					+ TICKETS_LOTTERY_ID + " INTEGER, " + TICKETS_TITLE
 					+ " TEXT," + TICKETS_CREATION_TIME + " TEXT, "
-					+ "FOREIGN KEY" + "(" + TICKETS_MACHINE_ID + ") "
+					+ "FOREIGN KEY" + "(" + TICKETS_LOTTERY_ID + ") "
 					+ "REFERENCES " + TABLE_LOTTERIES + "(" + "_id" + ")"
 					+ ");";
 			db.execSQL(createTicketsTableSql);
@@ -78,9 +80,9 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			// Create draws table
 			String createDrawsTableSql = "CREATE TABLE " + TABLE_DRAWS + " ("
 					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-					+ DRAWS_MACHINE_ID + " INTEGER, " + DRAWS_TIMESTAMP
+					+ DRAWS_LOTTERY_ID + " INTEGER, " + DRAWS_TIMESTAMP
 					+ " TEXT, " + DRAWS_RESULT + " TEXT, " + "FOREIGN KEY"
-					+ "(" + DRAWS_MACHINE_ID + ") " + "REFERENCES "
+					+ "(" + DRAWS_LOTTERY_ID + ") " + "REFERENCES "
 					+ TABLE_LOTTERIES + "(" + "_id" + ")" + ");";
 			db.execSQL(createDrawsTableSql);
 
@@ -93,6 +95,47 @@ public class DatabaseHelper extends SQLiteOpenHelper
 			db.endTransaction();
 		}
 
+	}
+
+	public long insertLottery(String title, String description)
+	{
+		ContentValues cv = new ContentValues();
+
+		cv.put(DatabaseHelper.LOTTERIES_TITLE, title);
+		cv.put(DatabaseHelper.LOTTERIES_DESCRIPTION, description);
+		cv.put(DatabaseHelper.LOTTERIES_CREATION_TIME, getTimestamp());
+
+		SQLiteDatabase sqlDb = getWritableDatabase();
+		long rowId = sqlDb.insert(TABLE_LOTTERIES, LOTTERIES_TITLE, cv);
+
+		return rowId;
+	}
+
+	private String getTimestamp()
+	{
+		String timeStamp = new Date().toString();
+		return timeStamp;
+	}
+
+	public void insertLotteryTickets(long lotteryId, ArrayList<String> tickets)
+	{
+		SQLiteDatabase sqlDb = getWritableDatabase();
+		ContentValues cv = new ContentValues();
+		for(String tckt: tickets)
+		{
+			cv.put(TICKETS_TITLE, tckt);
+			cv.put(TICKETS_CREATION_TIME, getTimestamp());
+			cv.put(TICKETS_LOTTERY_ID, lotteryId);
+			
+			sqlDb.insert(TABLE_TICKETS, TICKETS_TITLE, cv);
+		}
+	}
+
+	public Cursor selectLotteriesQuery()
+	{
+		String sql = "SELECT _id, title, description"
+				+ " FROM lotteries ORDER BY title";
+		return getReadableDatabase().rawQuery(sql, null);
 	}
 
 	@Override

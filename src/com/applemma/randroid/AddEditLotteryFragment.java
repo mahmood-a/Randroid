@@ -77,18 +77,10 @@ public class AddEditLotteryFragment extends Fragment implements
 	@Override
 	public void onClick(View v)
 	{
-		ContentValues cv = new ContentValues();
-
 		String title = titleEdit.getText().toString();
-		cv.put(DatabaseHelper.LOTTERIES_TITLE, title);
+		String description = descriptionEdit.getText().toString();
 
-		String desciption = descriptionEdit.getText().toString();
-		cv.put(DatabaseHelper.LOTTERIES_DESCRIPTION, desciption);
-
-		String timeStamp = new Date().toString();
-		cv.put(DatabaseHelper.LOTTERIES_CREATION_TIME, timeStamp);
-
-		new InsertLotteryTask().execute(cv);
+		new InsertLotteryTask().execute(title, description);
 	}
 
 	public void addTicketToList(String ticket)
@@ -104,16 +96,14 @@ public class AddEditLotteryFragment extends Fragment implements
 	}
 
 	private class InsertLotteryTask extends
-			AsyncTask<ContentValues, Void, Void>
+			AsyncTask<String, Void, Void>
 	{
 		Boolean lotteryAdded = false;
 
 		@Override
-		protected Void doInBackground(ContentValues... cv)
+		protected Void doInBackground(String... args)
 		{
-			long rowId = db.getWritableDatabase().insert(
-					DatabaseHelper.TABLE_LOTTERIES,
-					DatabaseHelper.LOTTERIES_TITLE, cv[0]);
+			long rowId = db.insertLottery(args[0], args[1]);
 
 			if (rowId < 0)
 			{

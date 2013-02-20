@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 public class LotteriesFragment extends ListFragment implements
 		View.OnClickListener
 {
-	private DatabaseHelper db;
+	DatabaseHelper db;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
@@ -60,13 +60,6 @@ public class LotteriesFragment extends ListFragment implements
 		db.close();
 	}
 
-	private Cursor selectLotteriesQuery()
-	{
-		String sql = "SELECT _id, title, description"
-				+ " FROM lotteries ORDER BY title";
-		return db.getReadableDatabase().rawQuery(sql, null);
-	}
-
 	private class LoadLotteriesCursorTask extends AsyncTask<Void, Void, Void>
 	{
 		private Cursor lotteriesCursor;
@@ -74,7 +67,7 @@ public class LotteriesFragment extends ListFragment implements
 		@Override
 		protected Void doInBackground(Void... params)
 		{
-			lotteriesCursor = selectLotteriesQuery();
+			lotteriesCursor = db.selectLotteriesQuery();
 			lotteriesCursor.getCount();
 
 			return null;
