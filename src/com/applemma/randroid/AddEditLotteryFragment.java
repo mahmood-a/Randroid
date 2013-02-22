@@ -95,25 +95,19 @@ public class AddEditLotteryFragment extends Fragment implements
 		super.onDestroy();
 	}
 
-	private class InsertLotteryTask extends
-			AsyncTask<String, Void, Void>
+	private class InsertLotteryTask extends AsyncTask<String, Void, Void>
 	{
-		Boolean lotteryAdded = false;
-
+		boolean lotteryAdded = false;
+		
 		@Override
 		protected Void doInBackground(String... args)
-		{
+		{	
 			long rowId = db.insertLottery(args[0], args[1]);
 
-			if (rowId < 0)
-			{
-				Log.e("Row not added",
-						"InsertLotteryTask in AddEditLotteryFragment "
-								+ "could not add a new lottery to the database.");
-			}
-			else
+			if (rowId >= 0)
 			{
 				lotteryAdded = true;
+				db.insertLotteryTickets(rowId, mTicketsList);
 			}
 
 			return null;

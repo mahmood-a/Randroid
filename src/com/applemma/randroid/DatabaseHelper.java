@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,7 +107,25 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		cv.put(DatabaseHelper.LOTTERIES_CREATION_TIME, getTimestamp());
 
 		SQLiteDatabase sqlDb = getWritableDatabase();
-		long rowId = sqlDb.insert(TABLE_LOTTERIES, LOTTERIES_TITLE, cv);
+		long rowId = -1; // the value -1 means no row was added
+
+		try
+		{
+			sqlDb.beginTransaction();
+
+			rowId = sqlDb.insert(TABLE_LOTTERIES, LOTTERIES_TITLE, cv);
+
+			sqlDb.setTransactionSuccessful();
+		}
+		catch (Exception e)
+		{
+			Log.e(getClass().getSimpleName(),
+					"Exception inserting a new lottery.", e);
+		}
+		finally
+		{
+			sqlDb.endTransaction();
+		}
 
 		return rowId;
 	}
@@ -121,14 +140,32 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	{
 		SQLiteDatabase sqlDb = getWritableDatabase();
 		ContentValues cv = new ContentValues();
-		for(String tckt: tickets)
+
+		try
 		{
-			cv.put(TICKETS_TITLE, tckt);
-			cv.put(TICKETS_CREATION_TIME, getTimestamp());
-			cv.put(TICKETS_LOTTERY_ID, lotteryId);
-			
-			sqlDb.insert(TABLE_TICKETS, TICKETS_TITLE, cv);
+			sqlDb.beginTransaction();
+
+			for (String tckt : tickets)
+			{
+				cv.put(TICKETS_TITLE, tckt);
+				cv.put(TICKETS_CREATION_TIME, getTimestamp());
+				cv.put(TICKETS_LOTTERY_ID, lotteryId);
+
+				sqlDb.insert(TABLE_TICKETS, TICKETS_TITLE, cv);
+			}
+
+			sqlDb.setTransactionSuccessful();
 		}
+		catch (Exception e)
+		{
+			Log.e(getClass().getSimpleName(),
+					"Exception inserting tickets for a lottery.", e);
+		}
+		finally
+		{
+			sqlDb.endTransaction();
+		}
+
 	}
 
 	public Cursor selectLotteriesQuery()
