@@ -1,12 +1,9 @@
 package com.applemma.randroid;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.DatabaseUtils.InsertHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class AddEditLotteryFragment extends Fragment implements
 		View.OnClickListener
@@ -95,25 +91,19 @@ public class AddEditLotteryFragment extends Fragment implements
 		super.onDestroy();
 	}
 
-	private class InsertLotteryTask extends
-			AsyncTask<String, Void, Void>
+	private class InsertLotteryTask extends AsyncTask<String, Void, Void>
 	{
-		Boolean lotteryAdded = false;
-
+		boolean lotteryAdded = false;
+		
 		@Override
 		protected Void doInBackground(String... args)
-		{
+		{	
 			long rowId = db.insertLottery(args[0], args[1]);
 
-			if (rowId < 0)
-			{
-				Log.e("Row not added",
-						"InsertLotteryTask in AddEditLotteryFragment "
-								+ "could not add a new lottery to the database.");
-			}
-			else
+			if (rowId >= 0)
 			{
 				lotteryAdded = true;
+				db.insertLotteryTickets(rowId, mTicketsList);
 			}
 
 			return null;
@@ -130,11 +120,6 @@ public class AddEditLotteryFragment extends Fragment implements
 				Toast.makeText(getActivity(), R.string.lottery_added_toast,
 						Toast.LENGTH_SHORT).show();
 			}
-		}
-
-		private void insertLotteryTicekts()
-		{
-			// TODO
 		}
 	}
 
