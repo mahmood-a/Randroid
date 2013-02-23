@@ -11,12 +11,13 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 public class LotteriesFragment extends ListFragment implements
-		View.OnClickListener
+		View.OnClickListener, AdapterView.OnItemLongClickListener
 {
 	DatabaseHelper db;
-
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -36,8 +37,17 @@ public class LotteriesFragment extends ListFragment implements
 				false);
 
 		layout.findViewById(R.id.add_lottery_btn).setOnClickListener(this);
+		getListView().setOnItemLongClickListener(this);
 
 		return layout;
+	}
+	
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+			long id)
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
