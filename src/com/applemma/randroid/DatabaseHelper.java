@@ -35,23 +35,23 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	static final String DRAWS_LOTTERY_ID = "lottery_id";
 
 	// Singleton members
-	private static DatabaseHelper singleton = null;
-	private Context ctxt = null;
+	private static DatabaseHelper mSingleton = null;
+	private Context mCtxt = null;
 
 	public synchronized static DatabaseHelper getInstance(Context ctxt)
 	{
-		if (singleton == null)
+		if (mSingleton == null)
 		{
-			singleton = new DatabaseHelper(ctxt.getApplicationContext());
+			mSingleton = new DatabaseHelper(ctxt.getApplicationContext());
 		}
 
-		return singleton;
+		return mSingleton;
 	}
 
 	private DatabaseHelper(Context ctxt)
 	{
 		super(ctxt, DATABASE_NAME, null, SCHEMA);
-		this.ctxt = ctxt;
+		this.mCtxt = ctxt;
 	}
 
 	@Override

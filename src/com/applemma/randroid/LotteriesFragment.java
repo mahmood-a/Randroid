@@ -16,7 +16,7 @@ import android.widget.AdapterView;
 public class LotteriesFragment extends ListFragment implements
 		View.OnClickListener, AdapterView.OnItemLongClickListener
 {
-	DatabaseHelper db;
+	private DatabaseHelper mDb;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
@@ -24,8 +24,9 @@ public class LotteriesFragment extends ListFragment implements
 		super.onActivityCreated(savedInstanceState);
 
 		setRetainInstance(true);
-
-		db = DatabaseHelper.getInstance(getActivity());
+		getListView().setOnItemLongClickListener(this);
+		mDb = DatabaseHelper.getInstance(getActivity());
+		
 		new LoadLotteriesCursorTask().execute();
 	}
 
@@ -37,10 +38,11 @@ public class LotteriesFragment extends ListFragment implements
 				false);
 
 		layout.findViewById(R.id.add_lottery_btn).setOnClickListener(this);
-		getListView().setOnItemLongClickListener(this);
 
 		return layout;
 	}
+	
+	
 	
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
@@ -67,7 +69,7 @@ public class LotteriesFragment extends ListFragment implements
 		super.onDestroy();
 
 		((CursorAdapter) getListAdapter()).getCursor().close();
-		db.close();
+		mDb.close();
 	}
 
 	private class LoadLotteriesCursorTask extends AsyncTask<Void, Void, Void>
@@ -77,7 +79,7 @@ public class LotteriesFragment extends ListFragment implements
 		@Override
 		protected Void doInBackground(Void... params)
 		{
-			lotteriesCursor = db.selectLotteriesQuery();
+			lotteriesCursor = mDb.selectLotteriesQuery();
 			lotteriesCursor.getCount();
 
 			return null;

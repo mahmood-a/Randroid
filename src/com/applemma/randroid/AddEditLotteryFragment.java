@@ -18,12 +18,11 @@ import java.util.ArrayList;
 public class AddEditLotteryFragment extends Fragment implements
 		View.OnClickListener
 {
-	DatabaseHelper db;
-
-	private EditText titleEdit;
-	private EditText descriptionEdit;
-	private Button okBtn;
-	private Button addTicketBtn;
+	private DatabaseHelper mDb;
+	private EditText mTitleEdit;
+	private EditText mDescriptionEdit;
+	private Button mOkBtn;
+	private Button mAddTicketBtn;
 	private ArrayList<String> mTicketsList;
 	private ListView mTicketsListView;
 	private ArrayAdapter<String> mListAdapter;
@@ -35,7 +34,7 @@ public class AddEditLotteryFragment extends Fragment implements
 
 		setRetainInstance(true);
 
-		db = DatabaseHelper.getInstance(getActivity());
+		mDb = DatabaseHelper.getInstance(getActivity());
 	}
 
 	@Override
@@ -45,8 +44,8 @@ public class AddEditLotteryFragment extends Fragment implements
 		View layout = inflater.inflate(R.layout.add_edit_lottery, container,
 				false);
 
-		titleEdit = (EditText) layout.findViewById(R.id.edit_title);
-		descriptionEdit = (EditText) layout.findViewById(R.id.edit_description);
+		mTitleEdit = (EditText) layout.findViewById(R.id.edit_title);
+		mDescriptionEdit = (EditText) layout.findViewById(R.id.edit_description);
 
 		mTicketsList = new ArrayList<String>();
 		mTicketsListView = (ListView) layout.findViewById(R.id.tickets_list);
@@ -54,11 +53,11 @@ public class AddEditLotteryFragment extends Fragment implements
 				android.R.layout.simple_list_item_1, mTicketsList);
 		mTicketsListView.setAdapter(mListAdapter);
 
-		okBtn = (Button) layout.findViewById(R.id.lottery_ok_btn);
-		okBtn.setOnClickListener(this);
+		mOkBtn = (Button) layout.findViewById(R.id.lottery_ok_btn);
+		mOkBtn.setOnClickListener(this);
 
-		addTicketBtn = (Button) layout.findViewById(R.id.add_ticket_btn);
-		addTicketBtn.setOnClickListener(new View.OnClickListener()
+		mAddTicketBtn = (Button) layout.findViewById(R.id.add_ticket_btn);
+		mAddTicketBtn.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
@@ -73,8 +72,8 @@ public class AddEditLotteryFragment extends Fragment implements
 	@Override
 	public void onClick(View v)
 	{
-		String title = titleEdit.getText().toString();
-		String description = descriptionEdit.getText().toString();
+		String title = mTitleEdit.getText().toString();
+		String description = mDescriptionEdit.getText().toString();
 
 		new InsertLotteryTask().execute(title, description);
 	}
@@ -98,12 +97,12 @@ public class AddEditLotteryFragment extends Fragment implements
 		@Override
 		protected Void doInBackground(String... args)
 		{	
-			long rowId = db.insertLottery(args[0], args[1]);
+			long rowId = mDb.insertLottery(args[0], args[1]);
 
 			if (rowId >= 0)
 			{
 				lotteryAdded = true;
-				db.insertLotteryTickets(rowId, mTicketsList);
+				mDb.insertLotteryTickets(rowId, mTicketsList);
 			}
 
 			return null;
