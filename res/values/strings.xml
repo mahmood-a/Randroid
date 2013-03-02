@@ -16,5 +16,7 @@
     <string name="lottery_added_toast">&quot;A new lottery has been added.&quot;</string>
     <string name="ticket_name">Ticket Name:</string>
     <string name="add_ticket_dlg_title">Add New Ticket</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
 </resources>
