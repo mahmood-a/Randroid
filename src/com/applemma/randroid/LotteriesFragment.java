@@ -36,6 +36,11 @@ public class LotteriesFragment extends ListFragment implements
 {
 	private DatabaseHelper mDb;
 	
+	public interface IDialogShower
+	{
+		public void showEditDelDialog(long lotteryID);
+	}
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -66,8 +71,10 @@ public class LotteriesFragment extends ListFragment implements
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
 			long id)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		IDialogShower activity = (IDialogShower)getActivity();
+		activity.showEditDelDialog(id);
+		
+		return true;
 	}
 
 	@Override

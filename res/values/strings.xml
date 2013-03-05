@@ -18,5 +18,6 @@
     <string name="add_ticket_dlg_title">Add New Ticket</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="edit_del_dlg_title">Select and action</string>
 
 </resources>

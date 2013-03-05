@@ -28,9 +28,9 @@ public class AddEditLotteryActivity extends DynamicFragmentActivity implements
 		AddEditLotteryFragment.IDialogShower
 {
 	public static final String EXTRA_LOTTERY_ID = "lottery_id";
-	
+
 	private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -44,7 +44,7 @@ public class AddEditLotteryActivity extends DynamicFragmentActivity implements
 	{
 		String dglTitle = getString(R.string.add_ticket_dlg_title);
 		TicketDialog dlg = TicketDialog.newInstance(dglTitle);
-		
+
 		FragmentManager fm = getSupportFragmentManager();
 		dlg.show(fm, DIALOG_FRAGMENT_TAG);
 	}
@@ -54,8 +54,8 @@ public class AddEditLotteryActivity extends DynamicFragmentActivity implements
 	{
 		FragmentManager fm = getSupportFragmentManager();
 		AddEditLotteryFragment frag = (AddEditLotteryFragment) fm
-				.findFragmentById(android.R.id.content);
-		
+				.findFragmentById(getFragmentId());
+
 		frag.addTicketToList(inputText);
 	}
 }

@@ -20,13 +20,16 @@ package com.applemma.randroid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 
 import com.applemma.util.support.DynamicFragmentActivity;
 
 public class LotteriesActivity extends DynamicFragmentActivity implements
-		EditDeleteDialog.OnActionSelectedListener
+		EditDeleteDialog.OnActionSelectedListener,
+		LotteriesFragment.IDialogShower
 {
+	private static final String EDIT_DEL_DIALOG_TAG = "edit_del_tag";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -44,17 +47,30 @@ public class LotteriesActivity extends DynamicFragmentActivity implements
 	}
 
 	@Override
-	public void onEditSelected()
+	public void onEditSelected(long lotteryID)
 	{
 		Intent i = new Intent(this, AddEditLotteryActivity.class);
-		//i.putExtra(AddEditLotteryActivity.EXTRA_LOTTERY_ID, value)
+		i.putExtra(AddEditLotteryActivity.EXTRA_LOTTERY_ID, lotteryID);
+		
+		startActivity(i);
 	}
 
 	@Override
-	public void onDelSelected()
+	public void onDelSelected(long lotteryID)
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void showEditDelDialog(long lotteryID)
+	{
+		String dlgTitle = getString(R.string.edit_del_dlg_title);
+		EditDeleteDialog dlg = EditDeleteDialog
+				.getInstance(dlgTitle, lotteryID);
+
+		FragmentManager fm = getSupportFragmentManager();
+		dlg.show(fm, EDIT_DEL_DIALOG_TAG);
 	}
 
 }

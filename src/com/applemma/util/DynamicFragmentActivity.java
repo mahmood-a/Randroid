@@ -33,13 +33,29 @@ import android.os.Build;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DynamicFragmentActivity extends Activity
 {
+	private int fragmentId = -1;
+	
+	/**
+	 * This method assumes the fragId = android.R.id.content
+	 * @param f	The fragment instance that is to be loaded dynamically
+	 */
 	protected void loadDynamicFragment(Fragment f)
 	{
-		if (getFragmentManager().findFragmentById(android.R.id.content) == null)
-		{
-			getFragmentManager().beginTransaction()
-					.add(android.R.id.content, f).commit();
-		}
+		loadDynamicFragment(f, android.R.id.content);
 	}
 
+	protected void loadDynamicFragment(Fragment f, int fragId)
+	{
+		fragmentId = fragId;
+		if (getFragmentManager().findFragmentById(fragmentId) == null)
+		{
+			getFragmentManager().beginTransaction().add(fragmentId, f)
+					.commit();
+		}
+	}
+	
+	protected int getFragmentId()
+	{
+		return fragmentId;
+	}
 }

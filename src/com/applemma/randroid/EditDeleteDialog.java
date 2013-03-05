@@ -28,21 +28,23 @@ import android.widget.TextView;
 public class EditDeleteDialog extends DialogFragment
 {
 	private static final String KEY_TITLE = "title";
+	private static final String KEY_SELECTED_ITEM_ID = "item_id";
 	private View mForm;
 
 	public interface OnActionSelectedListener
 	{
-		public void onEditSelected();
+		public void onEditSelected(long itemId);
 
-		public void onDelSelected();
+		public void onDelSelected(long itemId);
 	}
 
-	public static EditDeleteDialog getInstance(String dialogTitle)
+	public static EditDeleteDialog getInstance(String dialogTitle, long itemId)
 	{
 		EditDeleteDialog f = new EditDeleteDialog();
 		Bundle args = new Bundle();
 
 		args.putString(KEY_TITLE, dialogTitle);
+		args.putLong(KEY_SELECTED_ITEM_ID, itemId);
 		f.setArguments(args);
 
 		return f;
@@ -68,6 +70,11 @@ public class EditDeleteDialog extends DialogFragment
 
 		return dialog;
 	}
+	
+	private long getItemId()
+	{
+		return getArguments().getLong(KEY_SELECTED_ITEM_ID);
+	}
 
 	private class EditOnClickListener implements View.OnClickListener
 	{
@@ -76,10 +83,12 @@ public class EditDeleteDialog extends DialogFragment
 		public void onClick(View v)
 		{
 			OnActionSelectedListener activity = (OnActionSelectedListener) getActivity();
-			activity.onEditSelected();
+			activity.onEditSelected(getItemId());
 		}
 
 	}
+	
+	
 
 	private class DelOnClickListener implements View.OnClickListener
 	{
@@ -88,7 +97,7 @@ public class EditDeleteDialog extends DialogFragment
 		public void onClick(View v)
 		{
 			OnActionSelectedListener activity = (OnActionSelectedListener) getActivity();
-			activity.onDelSelected();
+			activity.onDelSelected(getItemId());
 		}
 
 	}

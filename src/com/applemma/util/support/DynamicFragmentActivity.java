@@ -22,9 +22,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 /**
- * An Activity that loads fragments dynamically, typically in
- * the "OnCreate" callback. This class is used with support versions
- * of FragmentActivity and Fragment
+ * An Activity that loads fragments dynamically, typically in the "OnCreate"
+ * callback. This class is used with support versions of FragmentActivity and
+ * Fragment
  * 
  * @author Mahmood
  * 
@@ -32,13 +32,29 @@ import android.support.v4.app.FragmentActivity;
 
 public class DynamicFragmentActivity extends FragmentActivity
 {
+	private int fragmentId = -1;
+	
+	/**
+	 * This method assumes the fragId = android.R.id.content
+	 * @param f	The fragment instance that is to be loaded dynamically
+	 */
 	protected void loadDynamicFragment(Fragment f)
 	{
-		if (getSupportFragmentManager().findFragmentById(android.R.id.content) == null)
-		{
-			getSupportFragmentManager().beginTransaction()
-					.add(android.R.id.content, f).commit();
-		}
+		loadDynamicFragment(f, android.R.id.content);
 	}
 
+	protected void loadDynamicFragment(Fragment f, int fragId)
+	{
+		fragmentId = fragId;
+		if (getSupportFragmentManager().findFragmentById(fragmentId) == null)
+		{
+			getSupportFragmentManager().beginTransaction().add(fragmentId, f)
+					.commit();
+		}
+	}
+	
+	protected int getFragmentId()
+	{
+		return fragmentId;
+	}
 }

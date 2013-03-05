@@ -88,7 +88,7 @@ public class AddEditLotteryFragment extends Fragment implements
 				activity.showAddTicketDialog();
 			}
 		});
-
+		
 		return layout;
 	}
 
