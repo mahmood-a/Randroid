@@ -35,12 +35,12 @@ public class LotteriesFragment extends ListFragment implements
 		View.OnClickListener, AdapterView.OnItemLongClickListener
 {
 	private DatabaseHelper mDb;
-	
+
 	public interface IDialogShower
 	{
 		public void showEditDelDialog(long lotteryID);
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -49,7 +49,7 @@ public class LotteriesFragment extends ListFragment implements
 		setRetainInstance(true);
 		getListView().setOnItemLongClickListener(this);
 		mDb = DatabaseHelper.getInstance(getActivity());
-		
+
 		new LoadLotteriesCursorTask().execute();
 	}
 
@@ -64,23 +64,21 @@ public class LotteriesFragment extends ListFragment implements
 
 		return layout;
 	}
-	
-	
-	
+
 	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
-			long id)
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id)
 	{
-		IDialogShower activity = (IDialogShower)getActivity();
+		IDialogShower activity = (IDialogShower) getActivity();
 		activity.showEditDelDialog(id);
-		
+
 		return true;
 	}
 
 	@Override
 	public void onClick(View v)
 	{
-		Intent i = new Intent(getActivity(), AddEditLotteryActivity.class);
+		Intent i = new Intent(getActivity(), AddLotteryActivity.class);
 
 		// extras could be put here, later
 

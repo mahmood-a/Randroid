@@ -23,9 +23,9 @@ import android.support.v4.app.FragmentManager;
 
 import com.applemma.util.support.DynamicFragmentActivity;
 
-public class AddEditLotteryActivity extends DynamicFragmentActivity implements
+public class AddLotteryActivity extends DynamicFragmentActivity implements
 		TicketDialog.EditTicketDialogListener,
-		AddEditLotteryFragment.IDialogShower
+		AddLotteryFragment.IDialogShower
 {
 	public static final String EXTRA_LOTTERY_ID = "lottery_id";
 
@@ -36,7 +36,7 @@ public class AddEditLotteryActivity extends DynamicFragmentActivity implements
 	{
 		super.onCreate(savedInstanceState);
 
-		loadDynamicFragment(new AddEditLotteryFragment());
+		loadDynamicFragment(new AddLotteryFragment());
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class AddEditLotteryActivity extends DynamicFragmentActivity implements
 	public void onFinishEditTicket(String inputText)
 	{
 		FragmentManager fm = getSupportFragmentManager();
-		AddEditLotteryFragment frag = (AddEditLotteryFragment) fm
+		AddLotteryFragment frag = (AddLotteryFragment) fm
 				.findFragmentById(getFragmentId());
 
 		frag.addTicketToList(inputText);

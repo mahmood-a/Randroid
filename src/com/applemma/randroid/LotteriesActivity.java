@@ -49,8 +49,8 @@ public class LotteriesActivity extends DynamicFragmentActivity implements
 	@Override
 	public void onEditSelected(long lotteryID)
 	{
-		Intent i = new Intent(this, AddEditLotteryActivity.class);
-		i.putExtra(AddEditLotteryActivity.EXTRA_LOTTERY_ID, lotteryID);
+		Intent i = new Intent(this, AddLotteryActivity.class);
+		i.putExtra(AddLotteryActivity.EXTRA_LOTTERY_ID, lotteryID);
 		
 		startActivity(i);
 	}

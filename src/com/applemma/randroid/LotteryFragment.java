@@ -18,8 +18,6 @@
 
 package com.applemma.randroid;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,27 +27,30 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class AddEditLotteryFragment extends Fragment implements
+/**
+ * @author Mahmood
+ * 
+ */
+public abstract class LotteryFragment extends Fragment implements
 		View.OnClickListener
 {
-	private DatabaseHelper mDb;
-	private EditText mTitleEdit;
-	private EditText mDescriptionEdit;
-	private Button mOkBtn;
-	private Button mAddTicketBtn;
-	private ArrayList<String> mTicketsList;
-	private ListView mTicketsListView;
-	private ArrayAdapter<String> mListAdapter;
-	
+	protected DatabaseHelper mDb;
+	protected EditText mTitleEdit;
+	protected EditText mDescriptionEdit;
+	protected Button mOkBtn;
+	protected Button mAddTicketBtn;
+	protected ArrayList<String> mTicketsList;
+	protected ListView mTicketsListView;
+	protected ArrayAdapter<String> mListAdapter;
+
 	public interface IDialogShower
 	{
 		void showAddTicketDialog();
 	}
-
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -68,7 +69,8 @@ public class AddEditLotteryFragment extends Fragment implements
 				false);
 
 		mTitleEdit = (EditText) layout.findViewById(R.id.edit_title);
-		mDescriptionEdit = (EditText) layout.findViewById(R.id.edit_description);
+		mDescriptionEdit = (EditText) layout
+				.findViewById(R.id.edit_description);
 
 		mTicketsList = new ArrayList<String>();
 		mTicketsListView = (ListView) layout.findViewById(R.id.tickets_list);
@@ -80,69 +82,36 @@ public class AddEditLotteryFragment extends Fragment implements
 		mOkBtn.setOnClickListener(this);
 
 		mAddTicketBtn = (Button) layout.findViewById(R.id.add_ticket_btn);
-		mAddTicketBtn.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				IDialogShower activity = (IDialogShower) getActivity();
-				activity.showAddTicketDialog();
-			}
-		});
-		
+		mAddTicketBtn.setOnClickListener(this);
+
 		return layout;
 	}
-
+	
 	@Override
 	public void onClick(View v)
 	{
-		String title = mTitleEdit.getText().toString();
-		String description = mDescriptionEdit.getText().toString();
-
-		new InsertLotteryTask().execute(title, description);
+		if(v.getId() == mOkBtn.getId())
+		{
+			onClickOkBtn();
+		}
+		else if(v.getId() == mAddTicketBtn.getId())
+		{
+			onClickAddTicketBtn();
+		}
 	}
-
+	
+	public abstract void onClickOkBtn();
+	public abstract void onClickAddTicketBtn();
+	
 	public void addTicketToList(String ticket)
 	{
 		mTicketsList.add(ticket);
 		mListAdapter.notifyDataSetChanged();
 	}
-
+	
 	@Override
 	public void onDestroy()
 	{
 		super.onDestroy();
 	}
-
-	private class InsertLotteryTask extends AsyncTask<String, Void, Void>
-	{
-		boolean lotteryAdded = false;
-		
-		@Override
-		protected Void doInBackground(String... args)
-		{	
-			long rowId = mDb.insertLottery(args[0], args[1]);
-
-			if (rowId >= 0)
-			{
-				lotteryAdded = true;
-				mDb.insertLotteryTickets(rowId, mTicketsList);
-			}
-
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result)
-		{
-			Intent i = new Intent(getActivity(), LotteriesActivity.class);
-			startActivity(i);
-
-			if (lotteryAdded)
-			{
-				Toast.makeText(getActivity(), R.string.lottery_added_toast,
-						Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
-
 }
