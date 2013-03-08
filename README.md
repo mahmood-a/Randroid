@@ -3,7 +3,7 @@ Randroid
 
 Randroid is an application that generates randomness in different flavors.
 It's intended to simulate lotteries, coin flipping, die rolling and random numbers generation.
-The program is is still infant, and I hope I can develop it to usable level.
+The program is still in its infancy, but I do hope to continue developing it to usable state.
 
 License
 ---------------------
