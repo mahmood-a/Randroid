@@ -16,12 +16,11 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.CursorAdapter;
@@ -30,6 +29,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+
+import com.applemma.randroid.R;
+import com.applemma.randroid.data.DatabaseHelper;
+import com.applemma.util.support.SimplerCursorAdapter;
 
 public class LotteriesFragment extends ListFragment implements
 		View.OnClickListener, AdapterView.OnItemLongClickListener
@@ -47,10 +50,13 @@ public class LotteriesFragment extends ListFragment implements
 		super.onActivityCreated(savedInstanceState);
 
 		setRetainInstance(true);
+
+		getListView().setLongClickable(true);
 		getListView().setOnItemLongClickListener(this);
+
 		mDb = DatabaseHelper.getInstance(getActivity());
 
-		new LoadLotteriesCursorTask().execute();
+		new LoadLotteriesTask().execute();
 	}
 
 	@Override
@@ -95,45 +101,29 @@ public class LotteriesFragment extends ListFragment implements
 		mDb.close();
 	}
 
-	private class LoadLotteriesCursorTask extends AsyncTask<Void, Void, Void>
+	private class LoadLotteriesTask extends AsyncTask<Void, Void, Void>
 	{
 		private Cursor lotteriesCursor;
 
 		@Override
 		protected Void doInBackground(Void... params)
 		{
-			lotteriesCursor = mDb.selectLotteriesQuery();
+			lotteriesCursor = mDb.selectLotteries();
 			lotteriesCursor.getCount();
 
 			return null;
 		}
 
-		@SuppressWarnings("deprecation")
 		@Override
 		protected void onPostExecute(Void result)
 		{
 			SimpleCursorAdapter adapter;
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			{
-				adapter = new SimpleCursorAdapter(
-						LotteriesFragment.this.getActivity(),
-						R.layout.lottery_list_row, lotteriesCursor,
-						new String[] { DatabaseHelper.LOTTERIES_TITLE,
-								DatabaseHelper.LOTTERIES_DESCRIPTION },
-						new int[] { R.id.lottery_title,
-								R.id.lottery_description });
-			}
-			else
-			{
-				adapter = new SimpleCursorAdapter(
-						LotteriesFragment.this.getActivity(),
-						R.layout.lottery_list_row, lotteriesCursor,
-						new String[] { DatabaseHelper.LOTTERIES_TITLE,
-								DatabaseHelper.LOTTERIES_DESCRIPTION },
-						new int[] { R.id.lottery_title,
-								R.id.lottery_description }, 0);
-			}
+			adapter = SimplerCursorAdapter.newInstance(
+					LotteriesFragment.this.getActivity(),
+					R.layout.lottery_list_row, lotteriesCursor, new String[] {
+							DatabaseHelper.LOTTERIES_TITLE,
+							DatabaseHelper.LOTTERIES_DESCRIPTION }, new int[] {
+							R.id.lottery_title, R.id.lottery_description });
 
 			setListAdapter(adapter);
 		}

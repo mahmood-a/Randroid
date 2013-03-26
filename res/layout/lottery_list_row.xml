@@ -4,16 +4,18 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageButton
-        android:id="@+id/lottery_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:contentDescription="@string/lottery_button"
-        android:padding="2dip"
-        android:src="@drawable/blue_ball" />
+<!--     <ImageButton -->
+<!--         android:id="@+id/lottery_icon" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:layout_gravity="center_vertical" -->
+<!--         android:contentDescription="@string/lottery_button" -->
+<!--         android:padding="2dip" -->
+<!--         android:focusable="false" -->
+<!--         android:src="@drawable/blue_ball" /> -->
 
     <LinearLayout
+        android:id="@+id/lottery_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -23,12 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
+            android:padding="4dip"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/lottery_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="4dip"
             android:textSize="15sp" />
     </LinearLayout>
 

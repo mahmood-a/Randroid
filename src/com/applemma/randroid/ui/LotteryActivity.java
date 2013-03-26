@@ -16,27 +16,32 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 
+import com.applemma.randroid.R;
 import com.applemma.util.support.DynamicFragmentActivity;
 
-public class AddLotteryActivity extends DynamicFragmentActivity implements
-		TicketDialog.EditTicketDialogListener,
-		AddLotteryFragment.IDialogShower
+/**
+ * @author Mahmood
+ * 
+ */
+public class LotteryActivity extends DynamicFragmentActivity implements
+		TicketDialog.EditTicketDialogListener, LotteryFragment.IDialogShower
 {
 	public static final String EXTRA_LOTTERY_ID = "lottery_id";
 
 	private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onFinishEditTicket(String inputText)
 	{
-		super.onCreate(savedInstanceState);
+		FragmentManager fm = getSupportFragmentManager();
+		LotteryFragment frag = (LotteryFragment) fm
+				.findFragmentById(getFragmentId());
 
-		loadDynamicFragment(new AddLotteryFragment());
+		frag.addTicketToList(inputText);
 	}
 
 	@Override
@@ -49,13 +54,4 @@ public class AddLotteryActivity extends DynamicFragmentActivity implements
 		dlg.show(fm, DIALOG_FRAGMENT_TAG);
 	}
 
-	@Override
-	public void onFinishEditTicket(String inputText)
-	{
-		FragmentManager fm = getSupportFragmentManager();
-		AddLotteryFragment frag = (AddLotteryFragment) fm
-				.findFragmentById(getFragmentId());
-
-		frag.addTicketToList(inputText);
-	}
 }

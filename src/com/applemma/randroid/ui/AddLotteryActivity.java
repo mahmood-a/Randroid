@@ -16,11 +16,17 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
-import android.support.v4.app.ListFragment;
+import android.os.Bundle;
 
-public class LotteryTicketsFragment extends ListFragment
+public class AddLotteryActivity extends LotteryActivity
 {
-	// TODO
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+		loadDynamicFragment(new AddLotteryFragment());
+	}
 }

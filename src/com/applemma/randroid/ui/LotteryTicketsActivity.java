@@ -16,7 +16,7 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.support.v4.app.FragmentActivity;
 

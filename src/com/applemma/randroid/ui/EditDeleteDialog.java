@@ -16,7 +16,7 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,6 +24,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.TextView;
+
+import com.applemma.randroid.R;
 
 public class EditDeleteDialog extends DialogFragment
 {
@@ -70,7 +72,7 @@ public class EditDeleteDialog extends DialogFragment
 
 		return dialog;
 	}
-	
+
 	private long getItemId()
 	{
 		return getArguments().getLong(KEY_SELECTED_ITEM_ID);
@@ -87,8 +89,6 @@ public class EditDeleteDialog extends DialogFragment
 		}
 
 	}
-	
-	
 
 	private class DelOnClickListener implements View.OnClickListener
 	{

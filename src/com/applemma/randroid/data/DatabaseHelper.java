@@ -16,7 +16,7 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -24,6 +24,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.applemma.randroid.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,20 +39,28 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private static final int SCHEMA = 1;
 
 	// Database tables and their columns
-	static final String TABLE_LOTTERIES = "lotteries";
-	static final String LOTTERIES_TITLE = "title";
-	static final String LOTTERIES_DESCRIPTION = "description";
-	static final String LOTTERIES_CREATION_TIME = "creation_time";
+	public static final String TABLE_LOTTERIES = "lotteries";
+	public static final String LOTTERIES_TITLE = "title";
+	public static final String LOTTERIES_DESCRIPTION = "description";
+	public static final String LOTTERIES_CREATION_TIME = "creation_time";
+	public static final int LOTTERY_ID_INDEX = 0;
+	public static final int LOTTERY_TITLE_INDEX = 1;
+	public static final int LOTTERY_DESCRIPTION_INDEX = 2;
+	public static final int LOTTERY_CREATION_INDEX = 4;
 
-	static final String TABLE_TICKETS = "tickets";
-	static final String TICKETS_TITLE = "title";
-	static final String TICKETS_CREATION_TIME = "creation_time";
-	static final String TICKETS_LOTTERY_ID = "lottery_id";
+	public static final String TABLE_TICKETS = "tickets";
+	public static final String TICKETS_TITLE = "title";
+	public static final String TICKETS_CREATION_TIME = "creation_time";
+	public static final String TICKETS_LOTTERY_ID = "lottery_id";
+	public static final int TICKET_ID_INDEX = 0;
+	public static final int TICKET_LOTTERY_ID_INDEX = 1;
+	public static final int TICKET_TITLE_INDEX = 2;
+	public static final int TICKET_CREATION_INDEX = 3;
 
-	static final String TABLE_DRAWS = "draw";
-	static final String DRAWS_TIMESTAMP = "timestamp";
-	static final String DRAWS_RESULT = "result";
-	static final String DRAWS_LOTTERY_ID = "lottery_id";
+	public static final String TABLE_DRAWS = "draw";
+	public static final String DRAWS_TIMESTAMP = "timestamp";
+	public static final String DRAWS_RESULT = "result";
+	public static final String DRAWS_LOTTERY_ID = "lottery_id";
 
 	// Singleton members
 	private static DatabaseHelper mSingleton = null;
@@ -69,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	private DatabaseHelper(Context ctxt)
 	{
 		super(ctxt, DATABASE_NAME, null, SCHEMA);
-		this.mCtxt = ctxt;
+		mCtxt = ctxt;
 	}
 
 	@Override
@@ -105,7 +115,10 @@ public class DatabaseHelper extends SQLiteOpenHelper
 					+ TABLE_LOTTERIES + "(" + "_id" + ")" + ");";
 			db.execSQL(createDrawsTableSql);
 
-			supplyDummyData(db);
+			if (BuildConfig.DEBUG)
+			{
+				supplyDummyData(db);
+			}
 
 			db.setTransactionSuccessful();
 		}
@@ -185,11 +198,63 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		}
 
 	}
+	
+	/**
+	 * 
+	 * @param lotteryId The ID of the lottery for which a new ticket is to be created
+	 * @param title the title/value of the ticket
+	 * @return The ID of the newly inserted ticket
+	 */
+	public long insertTicket(long lotteryId, String title)
+	{
+		SQLiteDatabase sqlDb = getWritableDatabase();
+		ContentValues cv = new ContentValues();
+		long ticketId = -1;
+		
+		try
+		{
+			sqlDb.beginTransaction();
 
-	public Cursor selectLotteriesQuery()
+			cv.put(TICKETS_TITLE, title);
+			cv.put(TICKETS_CREATION_TIME, getTimestamp());
+			cv.put(TICKETS_LOTTERY_ID, lotteryId);
+			
+			ticketId = sqlDb.insert(TABLE_TICKETS, TICKETS_TITLE, cv);
+
+			sqlDb.setTransactionSuccessful();
+		}
+		catch (Exception e)
+		{
+			Log.e(getClass().getSimpleName(),
+					"Exception inserting a single ticket for a lottery.", e);
+		}
+		finally
+		{
+			sqlDb.endTransaction();
+		}
+		
+		return ticketId;
+	}
+
+	public Cursor selectLotteries()
 	{
 		String sql = "SELECT _id, title, description"
 				+ " FROM lotteries ORDER BY title";
+		return getReadableDatabase().rawQuery(sql, null);
+	}
+
+	public Cursor selectLottery(long lotteryId)
+	{
+		String sql = String.format("SELECT * FROM lotteries WHERE _id = %d",
+				lotteryId);
+		return getReadableDatabase().rawQuery(sql, null);
+	}
+
+	public Cursor selectLotteryTickets(long lotteryId)
+	{
+		String sql = String.format("SELECT * FROM %s WHERE %s = %d",
+				TABLE_TICKETS, TICKETS_LOTTERY_ID, lotteryId);
+
 		return getReadableDatabase().rawQuery(sql, null);
 	}
 
@@ -228,5 +293,4 @@ public class DatabaseHelper extends SQLiteOpenHelper
 		cv.put(LOTTERIES_CREATION_TIME, otherDay.toString());
 		db.insert(TABLE_LOTTERIES, LOTTERIES_TITLE, cv);
 	}
-
 }

@@ -16,13 +16,14 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 
+import com.applemma.randroid.R;
 import com.applemma.util.support.DynamicFragmentActivity;
 
 public class LotteriesActivity extends DynamicFragmentActivity implements
@@ -49,8 +50,8 @@ public class LotteriesActivity extends DynamicFragmentActivity implements
 	@Override
 	public void onEditSelected(long lotteryID)
 	{
-		Intent i = new Intent(this, AddLotteryActivity.class);
-		i.putExtra(AddLotteryActivity.EXTRA_LOTTERY_ID, lotteryID);
+		Intent i = new Intent(this, EditLotteryActivity.class);
+		i.putExtra(EditLotteryActivity.EXTRA_LOTTERY_ID, lotteryID);
 		
 		startActivity(i);
 	}

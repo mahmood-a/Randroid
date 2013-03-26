@@ -16,22 +16,14 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.applemma.randroid.R;
 
 public class AddLotteryFragment extends LotteryFragment implements
 		View.OnClickListener
@@ -40,17 +32,10 @@ public class AddLotteryFragment extends LotteryFragment implements
 	@Override
 	public void onClickOkBtn()
 	{
-		 String title = mTitleEdit.getText().toString();
-		 String description = mDescriptionEdit.getText().toString();
+		 String title = getTitleEdit().getText().toString();
+		 String description = getDescriptionEdit().getText().toString();
 		
 		 new InsertLotteryTask().execute(title, description);
-	}
-
-	@Override
-	public void onClickAddTicketBtn()
-	{
-		IDialogShower activity = (IDialogShower) getActivity();
-		activity.showAddTicketDialog();
 	}
 
 	private class InsertLotteryTask extends AsyncTask<String, Void, Void>
@@ -60,12 +45,12 @@ public class AddLotteryFragment extends LotteryFragment implements
 		@Override
 		protected Void doInBackground(String... args)
 		{
-			long rowId = mDb.insertLottery(args[0], args[1]);
+			long rowId = getDb().insertLottery(args[0], args[1]);
 
 			if (rowId >= 0)
 			{
 				lotteryAdded = true;
-				mDb.insertLotteryTickets(rowId, mTicketsList);
+				getDb().insertLotteryTickets(rowId, getTicketsList());
 			}
 
 			return null;

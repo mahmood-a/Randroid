@@ -16,7 +16,7 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +28,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.applemma.randroid.R;
+import com.applemma.randroid.data.DatabaseHelper;
+
 import java.util.ArrayList;
 
 /**
@@ -37,20 +40,73 @@ import java.util.ArrayList;
 public abstract class LotteryFragment extends Fragment implements
 		View.OnClickListener
 {
-	protected DatabaseHelper mDb;
-	protected EditText mTitleEdit;
-	protected EditText mDescriptionEdit;
-	protected Button mOkBtn;
-	protected Button mAddTicketBtn;
-	protected ArrayList<String> mTicketsList;
-	protected ListView mTicketsListView;
-	protected ArrayAdapter<String> mListAdapter;
+
+	private DatabaseHelper mDb;
+	private EditText mTitleEdit;
+	private EditText mDescriptionEdit;
+	private Button mOkBtn;
+	private Button mAddTicketBtn;
+	private ArrayList<String> mTicketsList;
+	private ListView mTicketsListView;
+	private ArrayAdapter<String> mListAdapter;
+
+	// Setters & Getters
+	protected final DatabaseHelper getDb()
+	{
+		return mDb;
+	}
+
+	protected final EditText getTitleEdit()
+	{
+		return mTitleEdit;
+	}
+
+	protected final EditText getDescriptionEdit()
+	{
+		return mDescriptionEdit;
+	}
+
+	protected final Button getOkBtn()
+	{
+		return mOkBtn;
+	}
+
+	protected final Button getAddTicketBtn()
+	{
+		return mAddTicketBtn;
+	}
+
+	protected final ArrayList<String> getTicketsList()
+	{
+		return mTicketsList;
+	}
+
+	protected final void setTicketsList(ArrayList<String> list)
+	{
+		mTicketsList.clear();
+		mTicketsList.addAll(list);
+		if (mListAdapter != null)
+		{
+			mListAdapter.notifyDataSetChanged();
+		}
+	}
+
+	protected final ListView getTicketsListView()
+	{
+		return mTicketsListView;
+	}
+
+	protected final ArrayAdapter<String> getListAdapter()
+	{
+		return mListAdapter;
+	}
+	// End of Setters & Getters
 
 	public interface IDialogShower
 	{
 		void showAddTicketDialog();
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
@@ -86,29 +142,34 @@ public abstract class LotteryFragment extends Fragment implements
 
 		return layout;
 	}
-	
+
 	@Override
 	public void onClick(View v)
 	{
-		if(v.getId() == mOkBtn.getId())
+		if (v.getId() == mOkBtn.getId())
 		{
 			onClickOkBtn();
 		}
-		else if(v.getId() == mAddTicketBtn.getId())
+		else if (v.getId() == mAddTicketBtn.getId())
 		{
 			onClickAddTicketBtn();
 		}
 	}
-	
+
 	public abstract void onClickOkBtn();
-	public abstract void onClickAddTicketBtn();
-	
+
+	public void onClickAddTicketBtn()
+	{
+		IDialogShower activity = (IDialogShower) getActivity();
+		activity.showAddTicketDialog();
+	}
+
 	public void addTicketToList(String ticket)
 	{
 		mTicketsList.add(ticket);
 		mListAdapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public void onDestroy()
 	{

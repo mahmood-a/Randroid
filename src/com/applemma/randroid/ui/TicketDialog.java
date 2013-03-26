@@ -16,7 +16,7 @@
  * Randroid. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.applemma.randroid;
+package com.applemma.randroid.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -25,6 +25,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.EditText;
+
+import com.applemma.randroid.R;
 
 public class TicketDialog extends DialogFragment implements
 		DialogInterface.OnClickListener
