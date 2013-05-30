@@ -18,7 +18,8 @@
 
 package com.applemma.util;
 
-
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author Mahmood
@@ -26,53 +27,86 @@ package com.applemma.util;
  */
 public class StateList<T>
 {
+	ArrayList<StateNode> mList;
 	
+	/**
+	 * Adds the specified item at the end of this StateList.
+	 * @param element The item to add.
+	 */
+	public void addNewItem(T element)
+	{
+		StateNode node = new StateNode(element, State.ADDED);
+		mList.add(node);
+	}
+	
+	public StateList(Collection<T> collection)
+	{
+		mList = new ArrayList<StateNode>();
+		StateNode node;
+		for(T item: collection)
+		{
+			node = new StateNode(item, State.UNCHANGED);
+			mList.add(node);
+		}
+	}
+	
+	/**
+	 * Returns the element at the specified location in this list.
+	 * @param index
+	 * @return
+	 */
+	public T get(int index)
+	{
+		StateNode node = mList.get(index);
+		return null;
+	}
+
 	public enum State
 	{
 		UNCHANGED, MODIFIED, ADDED, DELETED
 	}
-	
-	public class StateNode<T>
-	{
-		T mItem;
-		State mItemState;
 
-		private StateNode(T item, State itemState)
+	private class StateNode
+	{
+		T mElement;
+		State mState;
+
+		public StateNode(T item, State state)
 		{
-			mItem = item;
-			mItemState = itemState;
+			mElement = item;
+			mState = state;
 		}
 
 		@Override
 		public String toString()
 		{
-			return mItem.toString();
+			return mElement.toString();
 		}
 
 		public T getItem()
 		{
-			return mItem;
+			return mElement;
 		}
 
-		public void setItem(T item)
+		public void setElement(T element)
 		{
-			T tempItem = mItem;
-			mItem = item;
-			if (!tempItem.equals(item))
+			T tempItem = mElement;
+			mElement = element;
+			if (!tempItem.equals(element))
 			{
-				mItemState = State.MODIFIED;
+				mState = State.MODIFIED;
 			}
 		}
 
 		public void delete()
 		{
-			mItem = null;
-			mItemState = State.DELETED;
+			mElement = null;
+			mState = State.DELETED;
 		}
 
-		public State getItemState()
+		public State getState()
 		{
-			return mItemState;
+			return mState;
 		}
 	}
 }

@@ -19,9 +19,14 @@
 package com.applemma.randroid.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 
-public class EditLotteryActivity extends LotteryActivity
+public class EditLotteryActivity extends LotteryActivity implements
+		EditDeleteDialog.OnActionSelectedListener,
+		EditDeleteDialog.IDialogShower
 {
+	private static final String EDIT_DEL_DIALOG_TAG = "edit_del_dlg";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -30,5 +35,27 @@ public class EditLotteryActivity extends LotteryActivity
 		long lotteryId = getIntent().getLongExtra(EXTRA_LOTTERY_ID, -1);
 
 		loadDynamicFragment(EditLotteryFragment.newInstance(lotteryId));
+	}
+
+	@Override
+	public void onEditSelected(long itemId)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onDelSelected(long itemId)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void showDialog(String title, long itemID)
+	{
+		EditDeleteDialog dlg = EditDeleteDialog.newInstance(title, itemID);
+		FragmentManager fm = getSupportFragmentManager();
+		dlg.show(fm, EDIT_DEL_DIALOG_TAG);
 	}
 }

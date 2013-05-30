@@ -32,6 +32,11 @@ public class EditDeleteDialog extends DialogFragment
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_SELECTED_ITEM_ID = "item_id";
 	private View mForm;
+	
+	public interface IDialogShower
+	{
+		public void showDialog(String title, long itemID);
+	}
 
 	public interface OnActionSelectedListener
 	{
@@ -40,7 +45,7 @@ public class EditDeleteDialog extends DialogFragment
 		public void onDelSelected(long itemId);
 	}
 
-	public static EditDeleteDialog getInstance(String dialogTitle, long itemId)
+	public static EditDeleteDialog newInstance(String dialogTitle, long itemId)
 	{
 		EditDeleteDialog f = new EditDeleteDialog();
 		Bundle args = new Bundle();

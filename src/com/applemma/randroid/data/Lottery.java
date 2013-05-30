@@ -55,18 +55,20 @@ public class Lottery
 		Ticket.newTicket(mId, ticketTitle, mCtxt);
 	}
 
-	public ArrayList<String> getLotteryTickets()
+	public Cursor getLotteryTickets()
 	{
 		Cursor ticketsCur = mDb.selectLotteryTickets(mId);
-		ArrayList<String> ticketsList = new ArrayList<String>();
-		while (ticketsCur.moveToNext())
-		{
-			String ticket = ticketsCur
-					.getString(DatabaseHelper.TICKET_TITLE_INDEX);
-			ticketsList.add(ticket);
-		}
+		return ticketsCur;
 		
-		return ticketsList;
+//		ArrayList<String> ticketsList = new ArrayList<String>();
+//		while (ticketsCur.moveToNext())
+//		{
+//			String ticket = ticketsCur
+//					.getString(DatabaseHelper.TICKET_TITLE_INDEX);
+//			ticketsList.add(ticket);
+//		}
+//		
+//		return ticketsList;
 	}
 
 	public String getTitle()

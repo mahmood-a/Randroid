@@ -46,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper
 	public static final int LOTTERY_ID_INDEX = 0;
 	public static final int LOTTERY_TITLE_INDEX = 1;
 	public static final int LOTTERY_DESCRIPTION_INDEX = 2;
-	public static final int LOTTERY_CREATION_INDEX = 4;
+	public static final int LOTTERY_CREATION_INDEX = 3;
 
 	public static final String TABLE_TICKETS = "tickets";
 	public static final String TICKETS_TITLE = "title";

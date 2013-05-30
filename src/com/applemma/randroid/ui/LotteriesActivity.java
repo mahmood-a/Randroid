@@ -68,7 +68,7 @@ public class LotteriesActivity extends DynamicFragmentActivity implements
 	{
 		String dlgTitle = getString(R.string.edit_del_dlg_title);
 		EditDeleteDialog dlg = EditDeleteDialog
-				.getInstance(dlgTitle, lotteryID);
+				.newInstance(dlgTitle, lotteryID);
 
 		FragmentManager fm = getSupportFragmentManager();
 		dlg.show(fm, EDIT_DEL_DIALOG_TAG);

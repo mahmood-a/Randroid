@@ -18,27 +18,34 @@
 
 package com.applemma.randroid.ui;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.CursorAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
+import com.applemma.randroid.R;
+import com.applemma.randroid.data.DatabaseHelper;
 import com.applemma.randroid.data.Lottery;
 
-import java.util.ArrayList;
-
-public class EditLotteryFragment extends LotteryFragment implements
-		View.OnClickListener
+public class EditLotteryFragment extends Fragment
 {
 	private static String KEY_LOTTERY_ID = "lottery_id";
-	
-	private String mTitleInit;
-	private boolean mTitleChanged = false;
-	
-	private String mDescInit;
-	private boolean mDescChanged = false;
-	
-	private ArrayList<String> mTicketsInit;
-	private boolean mTicketsChanged = false;
+
+	private DatabaseHelper mDb;
+	private EditText mEditTitle;
+	private EditText mEditDescription;
+	private ListView mTicketsListView;
+	private Button mAddTicketBtn;
 
 	public static EditLotteryFragment newInstance(long lotteryId)
 	{
@@ -55,39 +62,45 @@ public class EditLotteryFragment extends LotteryFragment implements
 	public void onActivityCreated(Bundle savedInstanceState)
 	{
 		super.onActivityCreated(savedInstanceState);
-		loadLottery();
+
+		setRetainInstance(true);
+
+		mDb = DatabaseHelper.getInstance(getActivity());
 	}
 
-	private void loadLottery()
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState)
 	{
-		long lotteryId = getArguments().getLong(KEY_LOTTERY_ID);
-		new LoadLotteryTask().execute(lotteryId);
-	}
+		View layout = inflater.inflate(R.layout.edit_lottery, container, false);
+		mEditTitle = (EditText) layout.findViewById(R.id.edit_title);
+		mEditDescription = (EditText) layout
+				.findViewById(R.id.edit_description);
 
-	@Override
-	public void onClickOkBtn()
-	{
-		String titleCurrent = getTitleEdit().getText().toString();
-		if(!mTitleInit.equals(titleCurrent))
-		{
-			mTitleChanged = true;
-		}
-		
-		String descCurrent = getDescriptionEdit().getText().toString();
-		if(!mDescInit.equals(descCurrent))
-		{
-			mDescChanged = true;
-		}
-		
-		ArrayList<String> ticketsCurrent = getTicketsList();
-		if(ticketsCurrent.size() != mTicketsInit.size())
-		{
-			mTicketsChanged = true;
-		}
-		else if(true)
-		{
-			// TODO, one of the tickets have different value
-		}
+		mTicketsListView = (ListView) layout.findViewById(R.id.tickets_list);
+		mTicketsListView.setLongClickable(true);
+		mTicketsListView
+				.setOnItemLongClickListener(new OnItemLongClickListener()
+				{
+
+					@Override
+					public boolean onItemLongClick(AdapterView<?> adapter,
+							View view, int pos, long id)
+					{
+						EditDeleteDialog.IDialogShower activity = 
+								(EditDeleteDialog.IDialogShower) getActivity();
+						
+						String title = getString(R.string.edit_del_dlg_title);
+						activity.showDialog(title, id);
+						
+						return true;
+					}
+				});
+
+		mAddTicketBtn = (Button) layout.findViewById(R.id.add_lottery_btn);
+
+		// TODO, Custom CursorAdapter for a synced list
+
+		return layout;
 	}
 
 	private class LoadLotteryTask extends AsyncTask<Long, Void, Lottery>
@@ -96,26 +109,44 @@ public class EditLotteryFragment extends LotteryFragment implements
 		@Override
 		protected Lottery doInBackground(Long... params)
 		{
-			long lotteryId = params[0];
-			Lottery lottery = new Lottery(lotteryId, getActivity());
-			mTicketsInit = lottery.getLotteryTickets();
-			return lottery;
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Lottery loadedLottery)
 		{
-			mTitleInit = loadedLottery.getTitle();
-			getTitleEdit().setText(mTitleInit);
-			
-			mDescInit = loadedLottery.getDescription();
-			getDescriptionEdit().setText(mDescInit);
-			
-			if (mTicketsInit != null)
-			{
-				setTicketsList(mTicketsInit);
-			}
-			super.onPostExecute(loadedLottery);
+
+		}
+
+	}
+
+	private class TicketsCursorAdapter extends CursorAdapter
+	{
+		private Context mCtxt;
+		private Cursor mCur;
+		private LayoutInflater mInflater;
+		private final String TAG = getClass().getSimpleName();
+
+		public TicketsCursorAdapter(Context context, Cursor c, int flags)
+		{
+			super(context, c, flags);
+			mCtxt = context;
+			mCur = c;
+			mInflater = LayoutInflater.from(mCtxt);
+		}
+
+		@Override
+		public void bindView(View view, Context context, Cursor c)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public View newView(Context arg0, Cursor arg1, ViewGroup arg2)
+		{
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
